@@ -1,0 +1,3 @@
+
+û%squid:RedundantThrowsDeclarationCheckm"mRemove the declaration of thrown exception 'java.lang.IllegalArgumentException' which is a runtime exception.(‘∑‚·
+Fsquid:S1066H"/Merge this if statement with the enclosing one.(çªÇ

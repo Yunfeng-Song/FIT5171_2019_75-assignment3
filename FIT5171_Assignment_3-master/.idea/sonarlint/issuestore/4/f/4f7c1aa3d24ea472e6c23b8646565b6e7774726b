@@ -1,0 +1,25 @@
+
+<squid:S2676Û"Use the original value instead.(øàúûÿÿÿÿ
+6squid:S2676}"Use the original value instead.(ƒñƒ„
+Osquid:S2629"7Use the built-in formatting to construct this argument.(Ì¼ÕÅ
+osquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(Ãµ¯­øÿÿÿÿ
+Osquid:S2629ç"7Use the built-in formatting to construct this argument.(‡“‚”
+Ysquid:S3457ç"AFormat specifiers should be used instead of string concatenation.(‡“‚”
+qsquid:S2293Ã"YReplace the type specification in this constructor call with the diamond operator ("<>").(–°ÆÍ
+]squid:S3457y"AFormat specifiers should be used instead of string concatenation.(ÿ½²øüÿÿÿÿ
+Jsquid:S1135Ï"2Complete the task associated to this TODO comment.(ò´å¹
+rsquid:S00115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(×êˆè
+Ysquid:S3457"AFormat specifiers should be used instead of string concatenation.(Ì¼ÕÅ
+Isquid:S1135?"2Complete the task associated to this TODO comment.(ò´å¹
+gsquid:S00100À"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¦Ãê‹
+Ysquid:S3457Ø"AFormat specifiers should be used instead of string concatenation.(¼òŸ
+Isquid:S1135"2Complete the task associated to this TODO comment.(ò´å¹
+Nsquid:S1135f"2Complete the task associated to this TODO comment.(Ä™ªºıÿÿÿÿ
+hsquid:CommentedOutCodeLineÚ"<This block of commented-out lines of code should be removed.(°¸ß‘ùÿÿÿÿ
+Csquid:S1612§",Replace this lambda with a method reference.(Í¥Åg
+Jsquid:S1135‚"2Complete the task associated to this TODO comment.(ò´å¹
+]squid:S3457I"AFormat specifiers should be used instead of string concatenation.(£ÂÌüÿÿÿÿ
+Osquid:S2629Ø"7Use the built-in formatting to construct this argument.(¼òŸ
+Csquid:S1612§",Replace this lambda with a method reference.(Í¥Åg
+Ssquid:S2629I"7Use the built-in formatting to construct this argument.(£ÂÌüÿÿÿÿ
+Zsquid:S2629y"7Use the built-in formatting to construct this argument.(ÿ½²øüÿÿÿÿ8Ğãáæ®-

@@ -1,0 +1,7 @@
+
+]squid:UselessImportCheck	"4Remove this unused import 'java.util.LinkedHashSet'.(àŽ€¼úÿÿÿÿ
+hsquid:S1192w"LDefine a constant instead of duplicating this literal "^([0-9]*)+$" 3 times.(éÛ½Ÿùÿÿÿÿ
+gsquid:CommentedOutCodeLineG"<This block of commented-out lines of code should be removed.(æÒçûÿÿÿÿ
+Isquid:S1135A"2Complete the task associated to this TODO comment.(û¿¡Â
+gsquid:CommentedOutCodeLineB"<This block of commented-out lines of code should be removed.(å¶Ðˆùÿÿÿÿ
+bsquid:CommentedOutCodeLinep"<This block of commented-out lines of code should be removed.(ñ©Ü–

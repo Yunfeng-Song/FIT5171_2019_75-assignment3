@@ -1,0 +1,24 @@
+
+bsquid:S1192¶"JDefine a constant instead of duplicating this literal "user_name" 5 times.(êñáã
+gsquid:S1192½"ODefine a constant instead of duplicating this literal "login.html.ftl" 3 times.(õ±¥Ø
+`squid:S1192|"IDefine a constant instead of duplicating this literal "lastName" 3 times.(–â²â
+fsquid:S1192{"JDefine a constant instead of duplicating this literal "firstName" 3 times.(ÀÑõüÿÿÿÿ
+fsquid:S1192Ö"IDefine a constant instead of duplicating this literal "errorMsg" 4 times.(Ğ›ˆıûÿÿÿÿ
+jsquid:S1192r"SDefine a constant instead of duplicating this literal "base_page.html.ftl" 4 times.(·ÒÿË
+]squid:S1192z"FDefine a constant instead of duplicating this literal "email" 3 times.(…èÕ
+_squid:S1192 "GDefine a constant instead of duplicating this literal "/hello" 3 times.(‘áû€
+usquid:S2293b"YReplace the type specification in this constructor call with the diamond operator ("<>").(Ñ¾´Êûÿÿÿÿ
+bsquid:CommentedOutCodeLineX"<This block of commented-out lines of code should be removed.(…èü
+bsquid:CommentedOutCodeLines"<This block of commented-out lines of code should be removed.(ıñÅ×
+Jsquid:S1135„"2Complete the task associated to this TODO comment.(’İã²
+Jsquid:S1135’"2Complete the task associated to this TODO comment.(°ÚÖš
+Jsquid:S1135–"2Complete the task associated to this TODO comment.(°ÚÖš
+Jsquid:S1135š"2Complete the task associated to this TODO comment.(°ÚÖš
+™squid:S1186“"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(§€¥™
+™squid:S1186—"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ÂøÓà
+squid:S1186›"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ˆÌ³şıÿÿÿÿ
+jsquid:S00117¶"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(êñáã
+jsquid:S00117Ä"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(éïË÷
+@squid:S1148ğ"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+Xsquid:S3457’"AFormat specifiers should be used instead of string concatenation.(ÿ•¥_
+^squid:S3457Ç"AFormat specifiers should be used instead of string concatenation.(ŞÉ•šıÿÿÿÿ

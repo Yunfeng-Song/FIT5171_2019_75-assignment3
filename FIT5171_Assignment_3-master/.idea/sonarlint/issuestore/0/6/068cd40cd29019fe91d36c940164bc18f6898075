@@ -1,0 +1,4 @@
+
+jsquid:ModifiersOrderCheck#"EReorder the modifiers to comply with the Java Language Specification.(È×¤ñ
+osquid:ModifiersOrderCheck%"EReorder the modifiers to comply with the Java Language Specification.(Ëú°úÿÿÿÿ
+£%squid:RedundantThrowsDeclarationCheck+"mRemove the declaration of thrown exception 'java.lang.IllegalArgumentException' which is a runtime exception.(Š¸œÿÿÿÿÿ
