@@ -16,6 +16,7 @@ import spark.template.freemarker.FreeMarkerEngine;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -145,6 +146,13 @@ public class App {
 
             logger.info("Registering <" + email + ">, " + password);
 
+            User userFound = dao.getUserByEmail(email);
+            if (userFound != null){
+
+                attributes.put("errorMsg", "This email address has already been used, please try another one.");
+                return new ModelAndView(attributes, "register.html.ftl");
+            }
+
             User user;
             try {
                 user = new User();
@@ -154,6 +162,8 @@ public class App {
                 user.setLastName(lastName);
                 dao.createOrUpdate(user);
 
+                Collection<User> a = dao.loadAll(User.class);
+                int b = a.size();
                 res.status(301);
                 req.session(true);
                 req.session().attribute("user", user);
@@ -201,6 +211,8 @@ public class App {
             User user = null;
             try {
                 user = dao.getUserByEmail(user_name);
+                Collection<User> a = dao.loadAll(User.class);
+                int b = a.size();
             } catch (Exception e) {
                 handleException(res, attributes, e, "login.html.ftl");
             }
@@ -220,12 +232,22 @@ public class App {
 
     private static void handleGetLogout() {
         get("/logout", (req, res) -> {
+
+            Collection<User> a = dao.loadAll(User.class);
+            int b = a.size();
+
             User user = getLoggedInUser(req);
             spark.Session session = req.session();
+
+            Collection<User> c = dao.loadAll(User.class);
+            int d = a.size();
+
             if (null != session && null != user) {
                 session.invalidate();
             }
             res.redirect("/");
+
+
             return "";
         });
     }
