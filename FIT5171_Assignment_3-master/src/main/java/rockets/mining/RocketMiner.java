@@ -119,6 +119,8 @@ public class RocketMiner {
      */
     public List<Launch> mostRecentLaunches(int k) {
         logger.info("find most recent " + k + " launches");
+        if (k < 0)
+            throw new IllegalArgumentException(noNegativeK);
         Collection<Launch> launches = dao.loadAll(Launch.class);
         Comparator<Launch> launchDateComparator = (a, b) -> -a.getLaunchDate().compareTo(b.getLaunchDate());
         return launches.stream().sorted(launchDateComparator).limit(k).collect(Collectors.toList());
