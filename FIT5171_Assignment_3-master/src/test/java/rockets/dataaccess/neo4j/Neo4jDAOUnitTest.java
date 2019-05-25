@@ -50,12 +50,14 @@ public class Neo4jDAOUnitTest {
         esa = new LaunchServiceProvider("ESA", 1970, "Europe");
         spacex = new LaunchServiceProvider("SpaceX", 2002, "USA");
         rocket = new Rocket("F9", "USA", spacex);
+        Rocket rocket1 = new Rocket("F9", "USA", spacex);
         user = new User("Tony", "Stark", "tony.stark@starkindustries.com");
-        launch = new Launch(LocalDate.parse("1977-08-20"), rocket, esa, "Pluto");
+        launch = new Launch(LocalDate.parse("1977-08-20"), null, spacex, "Pluto");
 
         Set launches = new HashSet();
         launches.add(launch);
         rocket.setLaunches(launches);
+
     }
 
     private static EmbeddedDriver createEmbeddedDriver(String fileDir) {
@@ -100,13 +102,13 @@ public class Neo4jDAOUnitTest {
         graphRocket = dao.load(Rocket.class, rocket.getId());
         assertEquals(newLink, graphRocket.getWikilink());
 
-        dao.delete(rocket);
-        dao.delete(launch);
     }
 
     @Test
     public void shouldNotSaveTwoSameRockets() {
         assertNull(spacex.getId());
+
+        Collection<LaunchServiceProvider> manufacturers123 = dao.loadAll(LaunchServiceProvider.class);
 
         Rocket rocket1 = new Rocket("F9", "USA", spacex);
         Set launches = new HashSet();
@@ -118,17 +120,15 @@ public class Neo4jDAOUnitTest {
         dao.createOrUpdate(rocket1);
         assertNotNull(spacex.getId());
         Collection<Rocket> rockets = dao.loadAll(Rocket.class);
-        assertEquals(2, rockets.size());
+        assertEquals(1, rockets.size());
         Collection<LaunchServiceProvider> manufacturers = dao.loadAll(LaunchServiceProvider.class);
-        assertEquals(2, manufacturers.size());
+        assertEquals(1, manufacturers.size());
         dao.createOrUpdate(rocket2);
         manufacturers = dao.loadAll(LaunchServiceProvider.class);
-        assertEquals(2, manufacturers.size());
+        assertEquals(1, manufacturers.size());
         rockets = dao.loadAll(Rocket.class);
-        assertEquals(2, rockets.size());
+        assertEquals(1, rockets.size());
 
-        dao.delete(rocket1);
-        dao.delete(launch);
     }
 
     @Test
@@ -149,15 +149,11 @@ public class Neo4jDAOUnitTest {
         }
 
         Collection<Rocket> loadedRockets = dao.loadAll(Rocket.class);
-        assertEquals(rockets.size() + 1, loadedRockets.size());
+        assertEquals(rockets.size(), loadedRockets.size());
         for (Rocket r : rockets) {
             assertTrue(rockets.contains(r));
         }
 
-        dao.delete(launch);
-        for (Rocket r : rockets) {
-            dao.delete(r);
-        };
     }
 
     @Test
@@ -173,7 +169,6 @@ public class Neo4jDAOUnitTest {
         assertFalse(launches.isEmpty());
         assertTrue(launches.contains(launch));
 
-        dao.delete(launch);
     }
 
 
@@ -184,7 +179,7 @@ public class Neo4jDAOUnitTest {
 
         Launch launch = new Launch();
         launch.setLaunchDate(LocalDate.of(2017, 1, 1));
-        launch.setLaunchVehicle(rocket);
+        //launch.setLaunchVehicle(rocket);
         launch.setLaunchSite("VAFB");
         launch.setOrbit("LEO");
         dao.createOrUpdate(launch);
@@ -197,11 +192,10 @@ public class Neo4jDAOUnitTest {
         launch.setFunction("experimental");
         dao.createOrUpdate(launch);
         launches = dao.loadAll(Launch.class);
-        assertEquals(2, launches.size());
+        assertEquals(1, launches.size());
         loadedLaunch = launches.iterator().next();
-        //assertEquals("experimental", loadedLaunch.getFunction());
+        assertEquals("experimental", loadedLaunch.getFunction());
 
-        dao.delete(launch);
     }
 
     @Test
@@ -232,8 +226,6 @@ public class Neo4jDAOUnitTest {
         dao.createOrUpdate(spacex);
         assertEquals(1, dao.loadAll(Rocket.class).size());
 
-        dao.delete(spacex);
-        dao.delete(rocket);
     }
 
 
@@ -250,7 +242,6 @@ public class Neo4jDAOUnitTest {
         assertEquals(user, userGraph);
         assertEquals(user.getEmail(), userGraph.getEmail());
 
-        dao.delete(user);
     }
 
     // Added by Zeeshan
@@ -261,7 +252,6 @@ public class Neo4jDAOUnitTest {
         assertNotNull(graphlsp.getId());
         assertEquals(esa, graphlsp);
 
-        dao.delete(esa);
     }
 
 
@@ -283,11 +273,6 @@ public class Neo4jDAOUnitTest {
         {
             assertTrue(usersFromDB.contains(u));
         }
-
-        for (User u : users)
-        {
-            dao.delete(u);
-        }
     }
 
     // Added by Zeeshan
@@ -308,10 +293,6 @@ public class Neo4jDAOUnitTest {
             assertTrue(launchesFromDB.contains(l));
         }
 
-        for (Launch l : launches)
-        {
-            dao.delete(l);
-        }
     }
 
     // Added by Zeeshan
@@ -334,10 +315,6 @@ public class Neo4jDAOUnitTest {
             assertTrue(lspsFromDB.contains(lsp)); //check that this line is correct
         }
 
-        for (LaunchServiceProvider lsp : launchServiceProviders)
-        {
-            dao.delete(lsp);
-        }
     }
 
     // Added by Luke
@@ -359,10 +336,6 @@ public class Neo4jDAOUnitTest {
             assertTrue(payloadsFromDB.contains(payload));
         }
 
-
-        for (Payload payload : payloads) {
-            dao.delete(payload);
-        }
     }
 
 
@@ -379,19 +352,36 @@ public class Neo4jDAOUnitTest {
         User graphUser = dao.load(User.class, user1.getId());
         assertEquals(newEmail, graphUser.getEmail());
 
-        dao.delete(user1);
     }
+
+//    @Test
+//    public void test(){
+//        Collection<Rocket> a = dao.loadAll(Rocket.class);
+//        dao.createOrUpdate(rocket);
+//        a = dao.loadAll(Rocket.class);
+//
+//        Rocket rocket1 = new Rocket("F9", "USA", spacex);
+//        Set launches = new HashSet();
+//        launches.add(launch);
+//        rocket1.setLaunches(launches);
+//        dao.createOrUpdate(rocket1);
+//        a = dao.loadAll(Rocket.class);
+//        int b = 1;
+//    }
 
     // Added by Zeeshan
     @Test
     public void shouldDeleteARocketSuccessfully()
     {
+
         dao.createOrUpdate(rocket);
         assertNotNull(rocket.getId());
         assertNotNull(rocket.getManufacturer().getId());
         assertFalse(dao.loadAll(Rocket.class).isEmpty());
+
         assertFalse(dao.loadAll(LaunchServiceProvider.class).isEmpty());
         dao.delete(rocket);
+
         assertTrue(dao.loadAll(Rocket.class).isEmpty());
         dao.delete(rocket);
         assertTrue(dao.loadAll(Rocket.class).isEmpty());
