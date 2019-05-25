@@ -9,7 +9,9 @@ import org.neo4j.ogm.annotation.Relationship;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Pattern;
 
+import static org.apache.commons.lang3.Validate.notBlank;
 import static org.apache.commons.lang3.Validate.notNull;
 import static org.neo4j.ogm.annotation.Relationship.INCOMING;
 import static org.neo4j.ogm.annotation.Relationship.OUTGOING;
@@ -45,21 +47,31 @@ public class Rocket extends Entity {
     @JsonIgnore
     private Set<Launch> launches;
 
-    public Rocket() {
-        super();
-    }
+    private Rocket() { super();}
 
+    /**
+     * All parameters shouldn't be null.
+     *
+     * @param name
+     * @param country
+     * @param manufacturer
+     */
     public Rocket(String name, String country, LaunchServiceProvider manufacturer) {
-        notNull(name);
-        notNull(country);
-        notNull(manufacturer);
-
-        this.name = name;
-        this.country = country;
-        this.manufacturer = manufacturer;
-
-        this.launches = new LinkedHashSet<>();
+        setName(name);
+        setCountry(country);
+        setManufacturer(manufacturer);
     }
+
+    //TODO: Compare this (newly added from assignment repo) constructor with the above and consider replacing
+//    public Rocket(String name, String country, LaunchServiceProvider manufacturer) {
+//        notNull(name);
+//        notNull(country);
+//        notNull(manufacturer);
+//
+//        this.name = name;
+//        this.country = country;
+//        this.manufacturer = manufacturer;
+//    }
 
     public String getName() {
         return name;
@@ -73,9 +85,7 @@ public class Rocket extends Entity {
         return manufacturer;
     }
 
-    public String getMassToLEO() {
-        return massToLEO;
-    }
+    public String getMassToLEO() { return massToLEO; }
 
     public String getMassToGTO() {
         return massToGTO;
@@ -85,25 +95,54 @@ public class Rocket extends Entity {
         return massToOther;
     }
 
+    public void setName(String name) {
+        notNull(name,  "rocket name cannot be null");
+        notBlank(name, "rocket name cannot be empty");
+        this.name = name.trim();
+    }
+
+    public void setCountry(String country) {
+        notNull(country, "rocket manufacture country cannot be null");
+        notBlank(country, "rocket manufacture country cannot be empty");
+        this.country = country.trim();
+    }
+
+    public void setManufacturer(LaunchServiceProvider manufacturer) {
+        notNull(manufacturer, "rocket manufacturer cannot be null");
+        //notBlank(manufacturer, "rocket manufacturer cannot be empty");
+        this.manufacturer = manufacturer;
+    }
+
+    public void setMassToLEO(String massToLEO) {
+        notNull(massToLEO, "massToLEO cannot be null");
+        notBlank(massToLEO, "massToLEO cannot be empty");
+        if (!Pattern.matches("^([0-9]*)+$", massToLEO.trim()))
+            throw new IllegalArgumentException("massToLEO must only contain numeric characters");
+        this.massToLEO = massToLEO.trim();
+    }
+
+    public void setMassToGTO(String massToGTO) {
+        notNull(massToGTO, "massToGTO cannot be null");
+        notBlank(massToGTO, "massToGTO cannot be empty");
+        if (!Pattern.matches("^([0-9]*)+$", massToGTO.trim()))
+            throw new IllegalArgumentException("massToGTO must only contain numeric characters");
+        this.massToGTO = massToGTO.trim();
+    }
+
+    public void setMassToOther(String massToOther) {
+        notNull(massToOther, "massToOther cannot be null");
+        notBlank(massToOther, "massToOther cannot be empty");
+        if (!Pattern.matches("^([0-9]*)+$", massToOther.trim()))
+            throw new IllegalArgumentException("massToOther must only contain numeric characters");
+        this.massToOther = massToOther.trim();
+    }
+
     public int getFirstYearFlight() {
         return firstYearFlight;
     }
 
     public int getLatestYearFlight() {
         return latestYearFlight;
-    }
-
-    public void setMassToLEO(String massToLEO) {
-        notNull(massToLEO);
-        this.massToLEO = massToLEO;
-    }
-
-    public void setMassToGTO(String massToGTO) {
-        this.massToGTO = massToGTO;
-    }
-
-    public void setMassToOther(String massToOther) {
-        this.massToOther = massToOther;
     }
 
     public void setFirstYearFlight(int firstYearFlight) {
@@ -121,6 +160,8 @@ public class Rocket extends Entity {
     public void setLaunches(Set<Launch> launches) {
         this.launches = launches;
     }
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -142,12 +183,10 @@ public class Rocket extends Entity {
         return "Rocket{" +
                 "name='" + name + '\'' +
                 ", country='" + country + '\'' +
-                ", manufacturer='" + manufacturer + '\'' +
+                ", manufacturer='" + manufacturer.getName() + '\'' +
                 ", massToLEO='" + massToLEO + '\'' +
                 ", massToGTO='" + massToGTO + '\'' +
                 ", massToOther='" + massToOther + '\'' +
-                ", firstYearFlight=" + firstYearFlight +
-                ", latestYearFlight=" + latestYearFlight +
                 '}';
     }
 }

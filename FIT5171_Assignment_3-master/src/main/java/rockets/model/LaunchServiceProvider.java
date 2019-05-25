@@ -1,92 +1,194 @@
 package rockets.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.neo4j.ogm.annotation.CompositeIndex;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Property;
-import org.neo4j.ogm.annotation.Relationship;
+import com.google.common.collect.Sets;
+import static org.apache.commons.lang3.Validate.notBlank;
 
-import java.util.LinkedHashSet;
+
+import java.util.HashSet;
+import java.util.regex.*;
+import java.text.DateFormat;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.Objects;
 import java.util.Set;
 
-import static org.apache.commons.lang3.Validate.notNull;
-import static org.neo4j.ogm.annotation.Relationship.OUTGOING;
-
-@NodeEntity
-@CompositeIndex(properties = {"name", "yearFounded", "country"}, unique = true)
-public class LaunchServiceProvider extends Entity {
-    @Property(name = "name")
+public class LaunchServiceProvider extends Entity
+{
     private String name;
 
-    @Property(name = "yearFounded")
     private int yearFounded;
 
-    @Property(name = "country")
     private String country;
 
-    @Property(name = "headquarters")
     private String headquarters;
 
-    @Relationship(type = "MANUFACTURES", direction= OUTGOING)
-    @JsonIgnore
     private Set<Rocket> rockets;
 
-    public LaunchServiceProvider() {
+
+    public LaunchServiceProvider(){
         super();
     }
 
-    public LaunchServiceProvider(String name, int yearFounded, String country) {
-        notNull(name);
-        notNull(country);
+    /**
+     * All parameters shouldn't be null.
+     *
+     * @param name
+     * @param yearFounded
+     * @param country
+     */
+    public LaunchServiceProvider(String name, int yearFounded, String country)
+    {
+        setName(name);
+        setYearFounded(yearFounded);
+        setCountry(country);
 
-        this.name = name;
-        this.yearFounded = yearFounded;
-        this.country = country;
-
-        this.rockets = new LinkedHashSet<>();
+        rockets = Sets.newLinkedHashSet();
     }
 
+    /**
+     * Accessor method for Name field.
+     *
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Accessor method for yearFounded field.
+     *
+     * @return yearFounded
+     */
     public int getYearFounded() {
         return yearFounded;
     }
 
+    /**
+     * Accessor method for country field.
+     *
+     * @return country
+     */
     public String getCountry() {
         return country;
     }
 
+    /**
+     * Accessor method for headquarters field.
+     *
+     * @return headquarters
+     */
     public String getHeadquarters() {
         return headquarters;
     }
 
-    public Set<Rocket> getRockets() {
+    /**
+     * Accessor method for Set of rockets objects.
+     *
+     * @return object rocket
+     */
+    public Set<Rocket> getRockets()
+    {
         return rockets;
     }
 
-    public void setHeadquarters(String headquarters) {
+    // setName() was missing. Included by Zeeshan.
+    /**
+     * Mutator method for name field.
+     *
+     * @param name
+     */
+    public void setName(String name)
+    {
+        notBlank(name, "Name cannot be null or empty.");
+        name = name.trim();
+        this.name = name;
+    }
+
+    // setYearFounded() was missing. Included by Zeeshan.
+
+    /**
+     * Mutator method for yearFounded field.
+     *
+     * @param yearFounded
+     */
+    public void setYearFounded(int yearFounded)
+    {
+        if (yearFounded < 1000)
+        {
+            throw new IllegalArgumentException("Year founded cannot be less than 1000.");
+        }
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy");
+
+        String str = dateFormat.format(date);
+        int currentYear = Integer.parseInt(str);
+        if (yearFounded > currentYear)
+            throw new IllegalArgumentException("Year founded cannot be in the future.");
+        this.yearFounded = yearFounded;
+    }
+
+    // setCountry() was missing. Included by Zeeshan.
+
+    /**
+     * Mutator method for country field.
+     *
+     * @param country
+     */
+    public void setCountry(String country)
+    {
+        notBlank(country, "Country's name cannot be null or empty.");
+        country = country.trim();
+        if (!Pattern.matches("^[a-zA-Z,'. ]*$", country))
+            throw new IllegalArgumentException("Country's name may only contain alphabets, comma, apostrophe and full stop.");
+
+        this.country = country;
+    }
+
+    /**
+     * Mutator method for headquarters field.
+     *
+     * @param headquarters
+     */
+    public void setHeadquarters(String headquarters)
+    {
+        notBlank(headquarters, "Headquarter's name cannot be null or empty.");
+        headquarters = headquarters.trim();
         this.headquarters = headquarters;
     }
 
-    public void setRockets(Set<Rocket> rockets) {
+    /**
+     * Mutator method for Set of rockets.
+     *
+     * @param rockets
+     */
+    public void setRockets(Set<Rocket> rockets)
+    {
+        Set<Rocket> rockets2 = new HashSet<>();
+        if(rockets.isEmpty())
+            throw new IllegalArgumentException("Set<Rocket> cannot be empty.");
+        for (Rocket rocket : rockets) {
+            rocket.setManufacturer(this);
+        }
         this.rockets = rockets;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o)
+    {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LaunchServiceProvider that = (LaunchServiceProvider) o;
-        return yearFounded == that.yearFounded &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(country, that.country);
+        LaunchServiceProvider launchServiceProvider = (LaunchServiceProvider) o;
+        // LaunchServiceProvider that = (LaunchServiceProvider) o;
+        return Objects.equals(name, launchServiceProvider.name) &&
+                Objects.equals(yearFounded, launchServiceProvider.yearFounded) &&
+                Objects.equals(country, launchServiceProvider.country) &&
+                Objects.equals(headquarters, launchServiceProvider.headquarters) &&
+                Objects.equals(rockets, launchServiceProvider.rockets);
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(name, yearFounded, country);
     }
 }

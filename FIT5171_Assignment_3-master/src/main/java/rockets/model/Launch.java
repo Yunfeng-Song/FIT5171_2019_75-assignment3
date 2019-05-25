@@ -1,46 +1,43 @@
 package rockets.model;
 
-import org.neo4j.ogm.annotation.CompositeIndex;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Property;
-import org.neo4j.ogm.annotation.Relationship;
-
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Set;
 
-import static org.neo4j.ogm.annotation.Relationship.INCOMING;
+import static org.apache.commons.lang3.Validate.notBlank;
 
-@NodeEntity
-@CompositeIndex(properties = {"launchDate", "launchVehicle", "launchSite", "orbit"}, unique = true)
 public class Launch extends Entity {
-
     public enum LaunchOutcome {
         FAILED, SUCCESSFUL
     }
 
-    @Property(name = "launchDate")
     private LocalDate launchDate;
 
-    @Relationship(type = "PROVIDES", direction = INCOMING)
     private Rocket launchVehicle;
 
-    private Set<String> payload;
+    private LaunchServiceProvider launchServiceProvider;
 
-    @Property(name = "launchSite")
+    private Set<Payload> payload;
+
     private String launchSite;
 
-    @Property(name = "orbit")
     private String orbit;
 
-    @Property(name = "function")
     private String function;
 
-    @Property(name = "launchOutcome")
+    private BigDecimal price;
+
     private LaunchOutcome launchOutcome;
 
-    @Property(name = "price")
-    private int price;
+    public Launch() {}
+
+    public Launch(LocalDate launchDate, Rocket rocket, LaunchServiceProvider serviceProvider, String orbit) {
+        this.launchDate = launchDate;
+        this.launchVehicle = rocket;
+        this.launchServiceProvider = serviceProvider;
+        this.orbit = orbit;
+    }
 
     public LocalDate getLaunchDate() {
         return launchDate;
@@ -50,60 +47,77 @@ public class Launch extends Entity {
         this.launchDate = launchDate;
     }
 
-    public void setLaunchVehicle(Rocket launchVehicle) {
-        this.launchVehicle = launchVehicle;
-    }
-
-    public void setOrbit(String orbit) {
-        this.orbit = orbit;
-    }
-
     public Rocket getLaunchVehicle() {
         return launchVehicle;
     }
 
-    public Set<String> getPayload() {
+    public void setLaunchVehicle(Rocket launchVehicle) {
+        this.launchVehicle = launchVehicle;
+    }
+
+    public LaunchServiceProvider getLaunchServiceProvider() {
+        return launchServiceProvider;
+    }
+
+    public void setLaunchServiceProvider(LaunchServiceProvider launchServiceProvider) {
+        this.launchServiceProvider = launchServiceProvider;
+    }
+
+    public Set<Payload> getPayload() {
         return payload;
+    }
+
+    public void setPayload(Set<Payload> payload) {
+        if (payload != null) {
+            if (payload.isEmpty())
+                throw new IllegalArgumentException("payload set cannot be set to empty");
+        }
+        this.payload = payload;
     }
 
     public String getLaunchSite() {
         return launchSite;
     }
 
+    public void setLaunchSite(String launchSite) {
+        notBlank(launchSite, "launchSite can't be null or empty");
+        this.launchSite = launchSite;
+    }
+
     public String getOrbit() {
         return orbit;
+    }
+
+    public void setOrbit(String orbit) {
+        notBlank(orbit, "orbit can't be null or empty");
+        this.orbit = orbit;
     }
 
     public String getFunction() {
         return function;
     }
 
+    public void setFunction(String function) {
+        notBlank(function, "function can't be null or empty");
+        this.function = function;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) throws IllegalArgumentException {
+        if (price.doubleValue() < 0)
+            throw new IllegalArgumentException("price can't be negative");
+        this.price = price;
+    }
+
     public LaunchOutcome getLaunchOutcome() {
         return launchOutcome;
     }
 
-    public void setPayload(Set<String> payload) {
-        this.payload = payload;
-    }
-
-    public void setLaunchSite(String launchSite) {
-        this.launchSite = launchSite;
-    }
-
-    public void setFunction(String function) {
-        this.function = function;
-    }
-
     public void setLaunchOutcome(LaunchOutcome launchOutcome) {
         this.launchOutcome = launchOutcome;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     @Override
@@ -113,11 +127,12 @@ public class Launch extends Entity {
         Launch launch = (Launch) o;
         return Objects.equals(launchDate, launch.launchDate) &&
                 Objects.equals(launchVehicle, launch.launchVehicle) &&
+                Objects.equals(launchServiceProvider, launch.launchServiceProvider) &&
                 Objects.equals(orbit, launch.orbit);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(launchDate, launchVehicle, orbit);
+        return Objects.hash(launchDate, launchVehicle, launchServiceProvider, orbit);
     }
 }
