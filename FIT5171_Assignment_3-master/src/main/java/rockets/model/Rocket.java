@@ -1,6 +1,7 @@
 package rockets.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.collect.Sets;
 import org.neo4j.ogm.annotation.CompositeIndex;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Property;
@@ -60,6 +61,8 @@ public class Rocket extends Entity {
         setName(name);
         setCountry(country);
         setManufacturer(manufacturer);
+
+        launches = Sets.newLinkedHashSet();
     }
 
     //TODO: Compare this (newly added from assignment repo) constructor with the above and consider replacing
