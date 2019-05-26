@@ -86,7 +86,7 @@
                         <excludedMethod>rockets.model.*.get*</excludedMethod>
                     </excludedMethods>
                     <outputFormats>
-                      <outputFormat>XML</outputFormat>
+                      <outputFormat>HTML</outputFormat>
                     </outputFormats>
                 </configuration>
             </plugin>
